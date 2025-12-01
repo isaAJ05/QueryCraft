@@ -294,13 +294,13 @@ const handleShowColumns = (db, table) => {
 // Función para refrescar la lista de bases de datos y tablas
 const refreshDatabases = async (dbToRefresh = null) => {
   // Actualiza bases de datos
-  fetch('http://127.0.0.1:5000/databases')
+  fetch('/databases')
     .then(res => res.json())
     .then(data => setDatabases(data.databases || []))
     .catch(() => setDatabases([]));
   // Si se pasa una base, refresca sus tablas
   if (dbToRefresh) {
-    fetch(`http://127.0.0.1:5000/tables?db=${dbToRefresh}`)
+    fetch(`/tables?db=${dbToRefresh}`)
       .then(res => res.json())
       .then(data => setTablesByDb(prev => ({ ...prev, [dbToRefresh]: data.tables || [] })))
       .catch(() => setTablesByDb(prev => ({ ...prev, [dbToRefresh]: [] })));
@@ -323,7 +323,7 @@ const refreshDatabases = async (dbToRefresh = null) => {
     let tableDbName = null;
     for (let q of queries) {
       try {
-        const response = await fetch('http://127.0.0.1:5000/execute', {
+        const response = await fetch('/execute', {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json'
