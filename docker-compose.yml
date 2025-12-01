@@ -1,38 +1,23 @@
 version: '3.9'
-services:
-  frontend:
-    build: ./frontend
-    container_name: react_frontend
-    expose:
-      - "80"                 # expone solo internamente al network
-    depends_on:
-      - backend
-    restart: unless-stopped
-    networks:
-      - traefik-net
-    labels:
-      - "traefik.enable=true"
-      - "traefik.http.services.react_frontend.loadbalancer.server.port=80"
-      - "traefik.http.routers.react_frontend.rule=Host(`TU_SUBDOMINIO`)"
-      - "traefik.docker.network=traefik-net"
 
+services:
   backend:
     build: ./backend
     container_name: flask_backend
-    expose:
-      - "5000"
+    ports:
+      - "5000:5000"
+    volumes:
+      - ./backend:/app
     environment:
       - FLASK_ENV=production
       - OAUTHLIB_INSECURE_TRANSPORT=1
     restart: unless-stopped
-    networks:
-      - traefik-net
-    labels:
-      - "traefik.enable=true"
-      - "traefik.http.services.flask_backend.loadbalancer.server.port=5000"
-      - "traefik.http.routers.flask_backend.rule=Host(`api.TU_SUBDOMINIO`)"
-      - "traefik.docker.network=traefik-net"
 
-networks:
-  traefik-net:
-    external: true
+  frontend:
+    build: ./frontend
+    container_name: react_frontend
+    ports:
+      - "3000:80"
+    depends_on:
+      - backend
+    restart: unless-stopped
