@@ -23,7 +23,7 @@ from google.auth.transport import requests as grequests
 # CONSTANTES Y APP FLASK
 # ==========================
 app = Flask(__name__)
-CORS(app)
+CORS(app, supports_credentials=True)
 DATA_DIR = "data"
 app.secret_key = "una_clave_secreta_segura"
 
