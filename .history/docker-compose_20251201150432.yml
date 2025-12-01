@@ -3,7 +3,6 @@ version: '3.9'
 services:
   backend:
     build: ./backend
-    container_name: flask_backend
     ports:
       - "5000:5000"
     volumes:
@@ -18,6 +17,3 @@ services:
     container_name: react_frontend
     ports:
       - "3000:80"
-    depends_on:
-      - backend
-    restart: unless-stopped

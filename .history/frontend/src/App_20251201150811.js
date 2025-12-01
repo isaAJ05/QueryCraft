@@ -300,7 +300,7 @@ const refreshDatabases = async (dbToRefresh = null) => {
     .catch(() => setDatabases([]));
   // Si se pasa una base, refresca sus tablas
   if (dbToRefresh) {
-    fetch(`http://127.0.0.1:5000/tables?db=${dbToRefresh}`)
+    fetch(`/tables?db=${dbToRefresh}`)
       .then(res => res.json())
       .then(data => setTablesByDb(prev => ({ ...prev, [dbToRefresh]: data.tables || [] })))
       .catch(() => setTablesByDb(prev => ({ ...prev, [dbToRefresh]: [] })));
@@ -323,7 +323,7 @@ const refreshDatabases = async (dbToRefresh = null) => {
     let tableDbName = null;
     for (let q of queries) {
       try {
-        const response = await fetch('http://127.0.0.1:5000/execute', {
+        const response = await fetch('/execute', {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json'
